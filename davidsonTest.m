@@ -10,9 +10,9 @@ close all;
 #  and compares results to expected values.
 #
 # ******************************************
-
+rand('seed',2);
 # define dimensions of test matrix
-dim = 6;
+dim = 4000;
 
 # define number of eigenvalues to find
 eigVals = 3;
@@ -20,18 +20,21 @@ eigVals = 3;
 # generate random test matrix
 ATest = rand(dim,dim);
 ATest = ATest'+ATest; # symmetrize
-ATest = ATest + diag(eye(dim,1));
+ATest = ATest + diag(eye(dim,1)) - 5000*eye(dim);
 
 # form initial search subspace
 vTest = orth(rand(dim,eigVals));
 
 # define convergence criteria
-cutTest = 1e-4; # cutoff
-maxTest = 30; # max iteration
+cutTest = 1e-6; # cutoff
+maxTest = 300; # max iteration
 
 printf("Mine:\n");
 davidson(ATest, vTest, cutTest, maxTest);
 
-printf("Expected:\n"),;
-eigs(ATest, dim),;
-
+printf("\n\n Expected:\n")
+[u,l] = eigs(ATest, eigVals);
+for s=diag(l)
+    printf(" %16.12f\n",s);
+end
+printf("\n");

@@ -36,16 +36,14 @@ lastSig = 1;
 while ( j<maxIter )
 
   # THE ISSUE IS WITH HOW YOU'RE CONSTRUCTING THE VECTOR SPACE!!
-  vSpace
 
   # form sigma vectors
   for ( i = vSpace(:, lastSig:end ) )
     sig = [sig, A*i];
   endfor
-  sig
 
   # form subspace matrix
-  Av = vSpace'*sig
+  Av = vSpace'*sig;
   # solve for k lowest eigenvalues
   [eVects, eVals] = eigs(Av, columns(Av));
   # eIndex tracks where the lowest values are
@@ -54,7 +52,6 @@ while ( j<maxIter )
   # discard high values
   eVals = eVals(1:k);
   eIndex = eIndex(1:k);
-  eVects
 
   r = [];
   # compute residuals
@@ -68,7 +65,7 @@ while ( j<maxIter )
     printf("%16.8f", i)
   endfor
   for ( i = 1:k )
-    printf("%16.8f", norm(r(:,i)))
+    printf("%12.1e", norm(r(:,i)))
   endfor
   printf("\n")
 
@@ -82,7 +79,7 @@ while ( j<maxIter )
   endfor
 
   if ( converged == true )
-    eVals,;
+    #eVals,;
     #eVects,;
     return;
   endif
